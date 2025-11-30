@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cursos Disponibles - ConectaFuturo{% endblock %}
+
+{% block content %}
+<style>
+  .curso-card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    height: 100%;
+    background-color: #fff;
+  }
+  .curso-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+  
+  .book-card {
+      transition: transform 0.2s;
+      border: 1px solid #eef0f3;
+  }
+  .book-card:hover { transform: scale(1.02); border-color: #0d6efd; }
+  
+  .bg-hero { background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); }
+</style>
+
+<div class="bg-hero text-white py-5 mb-5">
+    <div class="container text-center">
+        <h1 class="display-5 fw-bold">Aprende y Crece</h1>
+        <p class="lead mb-0 opacity-75">Cursos prácticos y recursos digitales para tu futuro profesional.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <!--cursos disponibles-->
+  <div class="d-flex align-items-center mb-4">
+      <h2 class="fw-bold text-dark mb-0"><i class="bi bi-mortarboard-fill text-primary me-2"></i>Cursos Disponibles</h2>
+      <span class="badge bg-light text-secondary ms-3 border">{{ cursos|length }} activos</span>
+  </div>
+
+  <div class="row justify-content-center mb-5">
+    {% for curso in cursos %}
+      <div class="col-md-4 mb-4 d-flex">
+        <div class="card curso-card w-100">
+          <div class="card-body d-flex flex-column text-center">
+            <div class="mb-3 text-primary"><i class="bi bi-laptop fs-1"></i></div>
+            <h5 class="card-title fw-bold text-primary">{{ curso.nombre_curso }}</h5>
+            <p class="card-text text-muted small">
+                {{ curso.descripcion|default:"Sin descripción."|truncatewords:20 }}
+            </p>
+            <div class="mt-2 mb-4">
+                <span class="badge bg-info text-dark me-1">{{ curso.modalidad }}</span>
+                <span class="badge bg-light text-secondary border">{{ curso.duracion }}h</span>
+            </div>
+            <div class="mt-auto">
+              {% if not user.is_authenticated %}
+                <a href="{% url 'login_usuario' %}" class="btn btn-outline-primary w-100 rounded-pill">Inicia sesión</a>
+              
+              {% elif user.tipo_usuario == "beneficiario" %}
+                <form method="post" action="{% url 'inscribir_curso' curso.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success w-100 rounded-pill shadow-sm">
+                        Inscribirme Ahora
+                    </button>
+                </form>
+
+              {% else %}
+                <button class="btn btn-secondary w-100 rounded-pill" disabled>Vista Informativa</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center py-5 bg-light rounded-3">
+          <p class="text-muted mb-0">No hay cursos publicados por el momento.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <hr class="my-5 opacity-25">
+
+  <!-- biblioteca-->
+  <div class="row align-items-center mb-4">
+      <div class="col-md-8">
+          <h2 class="fw-bold text-dark mb-1">
+              <i class="bi bi-google text-danger me-2"></i>Biblioteca Digital
+          </h2>
+          <p class="text-muted mb-0">
+              Accede a libros gratuitos y previsualizaciones gracias a nuestra integración con <strong>Google Books</strong>.
+          </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+          <a href="{% url 'biblioteca_digital' %}" class="btn btn-outline-dark rounded-pill">
+              <i class="bi bi-search me-1"></i> Buscar más libros
+          </a>
+      </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      {% for libro in libros %}
+      <div class="col">
+          <div class="card h-100 border-0 shadow-sm book-card">
+              <div class="row g-0 h-100">
+                  <div class="col-4 bg-light d-flex align-items-center justify-content-center p-2">
+                      {% if libro.imagen %}
+                          <img src="{{ libro.imagen }}" class="img-fluid rounded shadow-sm" alt="Portada" style="max-height: 100px;">
+                      {% else %}
+                          <i class="bi bi-book text-muted fs-2"></i>
+                      {% endif %}
+                  </div>
+                  <div class="col-8">
+                      <div class="card-body p-2 d-flex flex-column h-100 justify-content-center">
+                          <h6 class="card-title fw-bold small mb-1 text-truncate" title="{{ libro.titulo }}">
+                              {{ libro.titulo }}
+                          </h6>
+                          <p class="card-text text-muted x-small mb-2" style="font-size: 0.75rem;">
+                              {{ libro.autor|truncatechars:15 }}
+                          </p>
+                          <a href="{{ libro.link }}" target="_blank" class="text-primary fw-bold text-decoration-none" style="font-size: 0.8rem;">
+                              Leer <i class="bi bi-arrow-right"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+          <div class="alert alert-light border text-center">
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              Cargando recomendaciones de la biblioteca... (Si tarda, revisa tu conexión a internet)
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Biblioteca Digital - ConectaFuturo{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <!-- Encabezado -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary display-5"><i class="bi bi-google me-2"></i>Biblioteca Digital</h1>
+        <p class="text-muted fs-5">
+            Busca y explora millones de libros educativos gracias a nuestra integración con <strong>Google Books API</strong>.
+        </p>
+    </div>
+
+    <!-- Buscador -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form method="get" action="." class="d-flex shadow rounded-pill overflow-hidden bg-white border p-1">
+                <input type="text" name="q" class="form-control border-0 px-4 shadow-none fs-5" 
+                       placeholder="Escribe un tema (ej: Inteligencia Artificial, Python, Historia...)" 
+                       value="{{ busqueda }}" required>
+                <button type="submit" class="btn btn-primary px-5 rounded-pill fw-bold">
+                    <i class="bi bi-search me-2"></i> Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Resultados -->
+    {% if libros %}
+        <h5 class="mb-4 text-secondary border-bottom pb-2">Resultados para: <strong>"{{ busqueda }}"</strong></h5>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for libro in libros %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 hover-lift book-card">
+                    <div class="row g-0 h-100">
+                        <!-- Portada -->
+                        <div class="col-4 bg-light d-flex align-items-center justify-content-center p-2">
+                            {% if libro.imagen %}
+                                <img src="{{ libro.imagen }}" class="img-fluid rounded shadow-sm" alt="{{ libro.titulo }}">
+                            {% else %}
+                                <div class="text-muted text-center opacity-50">
+                                    <i class="bi bi-book fs-1"></i>
+                                    <small class="d-block">Sin Portada</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Info -->
+                        <div class="col-8">
+                            <div class="card-body py-2 pe-3 d-flex flex-column h-100">
+                                <h6 class="card-title fw-bold text-dark mb-1 small text-truncate" title="{{ libro.titulo }}">
+                                    {{ libro.titulo }}
+                                </h6>
+                                
+                                <p class="card-text text-muted xsmall mb-2 fst-italic">
+                                    {{ libro.autor|default:"Autor desconocido" }}
+                                </p>
+                                
+                                <div class="card-text small text-secondary flex-grow-1 overflow-hidden mb-2" style="height: 60px;">
+                                    {{ libro.descripcion|default:"Sin descripción disponible."|truncatewords:15 }}
+                                </div>
+                                
+                                <a href="{{ libro.link }}" target="_blank" class="btn btn-outline-primary btn-sm mt-auto w-100 rounded-pill">
+                                    Ver en Google Books <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% if busqueda %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-emoji-frown fs-1 text-muted opacity-50"></i>
+                <p class="text-muted mt-3">No encontramos libros relacionados con "{{ busqueda }}". Intenta con otra palabra.</p>
+            </div>
+        {% else %}
+            <!-- estado inicial (sin busqueda) -->
+            <div class="text-center py-5">
+                <i class="bi bi-book-half fs-1 text-primary opacity-25"></i>
+                <p class="text-muted mt-3">Ingresa un término arriba para comenzar a explorar la biblioteca.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<style>
+    .xsmall { font-size: 0.75rem; }
+    .hover-lift { transition: transform 0.2s; }
+    .hover-lift:hover { transform: translateY(-5px); }
+    .book-card { border: 1px solid #f0f0f0; }
+</style>
+{% endblock %}

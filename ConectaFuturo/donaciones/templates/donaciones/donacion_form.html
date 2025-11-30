@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Nueva Donación{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white p-4 rounded-top-4 text-center">
+                    <h2 class="h4 mb-0 fw-bold">
+                        <i class="bi bi-gift-fill me-2"></i>Registrar Donación
+                    </h2>
+                </div>
+
+                <div class="card-body p-5">
+                    <p class="text-muted text-center mb-4">
+                        Gracias por tu generosidad. Ingresa los detalles del recurso que deseas aportar y nos pondremos en contacto.
+                    </p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-success">
+                                {{ form.tipo.label }}
+                            </label>
+                            {{ form.tipo }}
+                            {% if form.tipo.errors %}
+                                <div class="text-danger small mt-1">{{ form.tipo.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-success">
+                                {{ form.cantidad.label }}
+                            </label>
+                            {{ form.cantidad }}
+                            {% if form.cantidad.errors %}
+                                <div class="text-danger small mt-1">{{ form.cantidad.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-success">
+                                {{ form.descripcion.label }}
+                            </label>
+                            {{ form.descripcion }}
+                            <div class="form-text">
+                                Describe brevemente el estado, marca o modelo (si aplica).
+                            </div>
+                            {% if form.descripcion.errors %}
+                                <div class="text-danger small mt-1">{{ form.descripcion.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-success btn-lg shadow fw-bold">
+                                Confirmar Donación
+                            </button>
+                            <a href="{% url 'dashboard_donante' %}" class="btn btn-outline-secondary">
+                                Cancelar y Volver
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

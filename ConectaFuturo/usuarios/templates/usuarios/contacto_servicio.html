@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Contacto Servicio Técnico{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-info text-white p-4 rounded-top-4 text-center">
+                    <h2 class="h4 mb-0 fw-bold"><i class="bi bi-tools me-2"></i>Solicitud de Servicio Técnico</h2>
+                </div>
+                <div class="card-body p-5">
+                    <p class="text-muted text-center mb-4">
+                        ¿Tienes un equipo que necesita reparación o mantenimiento? 
+                        Déjanos tus datos y el detalle del problema.
+                    </p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Tus Datos</label>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    {{ form.nombre_contacto }}
+                                    {% if form.nombre_contacto.errors %}
+                                        <div class="text-danger small">{{ form.nombre_contacto.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.email_contacto }}
+                                    {% if form.email_contacto.errors %}
+                                        <div class="text-danger small">{{ form.email_contacto.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Datos del Equipo</label>
+                            {{ form.equipo }}
+                            {% if form.equipo.errors %}
+                                <div class="text-danger small">{{ form.equipo.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Descripción del Problema</label>
+                            {{ form.descripcion_problema }}
+                            {% if form.descripcion_problema.errors %}
+                                <div class="text-danger small">{{ form.descripcion_problema.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-info text-white fw-bold btn-lg shadow-sm">
+                                <i class="bi bi-send-fill me-2"></i> Enviar Solicitud
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

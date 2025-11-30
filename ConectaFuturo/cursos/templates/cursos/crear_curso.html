@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo|default:"Crear Nuevo Curso" }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h2 class="h4 mb-0 fw-bold">
+                        <i class="bi bi-journal-plus me-2"></i>{{ titulo|default:"Crear Nuevo Curso" }}
+                    </h2>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Nombre del Curso</label>
+                            {{ form.nombre_curso }}
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Duración (Horas)</label>
+                                {{ form.duracion }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Modalidad</label>
+                                {{ form.modalidad }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Descripción</label>
+                            {{ form.descripcion }}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                            <a href="{% url 'dashboard_instructor' %}" class="btn btn-outline-secondary px-4 me-md-2">Cancelar</a>
+                            <button type="submit" class="btn btn-success px-4 fw-bold">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

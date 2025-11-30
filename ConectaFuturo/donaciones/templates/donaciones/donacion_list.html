@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Mi Historial de Donaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Historial de Mis Donaciones</h2>
+    <p class="text-center text-muted">Revisa el detalle de todos tus aportes a ConectaFuturo.</p>
+    <div class="row">
+        {% for donacion in donaciones %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100 border-2 border-warning">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-3 text-dark        <div class="col-12">
+            <div class="alert alert-info text-center mt-3 p-4 border-primary">
+                <h4 class="alert-heading">¡Aún no hay donaciones!</h4>
+                <p class="mb-0">Cuando realices tu primer aporte, aparecerá aquí.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-5 mb-5">
+        <a href="{% url 'donaciones:donacion_form' %}" class="btn btn-warning btn-lg me-3 shadow">
+            Registrar Nueva Donación
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-secondary btn-lg shadow">
+            Volver al Inicio
+        </a>
+    </div>
+</div>
+{% endblock %}

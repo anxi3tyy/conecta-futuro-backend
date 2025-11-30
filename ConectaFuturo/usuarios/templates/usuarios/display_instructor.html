@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel de Instructor{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-6 fw-bold text-primary">
+                <i class="bi bi-person-video3 me-2"></i>Panel de Instructor
+            </h1>
+            <p class="text-muted lead mb-0">
+                Bienvenido, <strong>{{ usuario.first_name|default:usuario.username }}</strong>. 
+                Gestiona tu oferta académica desde aquí.
+            </p>
+        </div>
+        <div>
+            <a href="{% url 'logout_usuario' %}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </a>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+
+            <a href="{% url 'curso_list_api' %}" target="_blank" class="btn btn-outline-secondary btn-sm" title="Ver datos en formato JSON">
+                <i class="bi bi-code-slash"></i> Ver API de Cursos
+            </a>
+        </div>
+
+        <a href="{% url 'crear_curso' %}" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle-fill me-1"></i> Crear Nuevo Curso
+        </a>
+    </div>
+
+    <div class="row mb-5 g-3">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white h-100 shadow-sm border-0">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase mb-0 opacity-75">Cursos Activos</h6>
+                        <h2 class="display-4 fw-bold mb-0">{{ cursos|length|default:"0" }}</h2>
+                    </div>
+                    <i class="bi bi-journal-bookmark fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white h-100 shadow-sm border-0">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase mb-0 opacity-75">Estudiantes</h6>
+                        <h2 class="display-4 fw-bold mb-0">-</h2>
+                    </div>
+                    <i class="bi bi-people fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--cursos-->
+    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+        <h3 class="h4 mb-0">Mis Cursos Publicados</h3>
+        <span class="badge bg-secondary">Vista de Gestión</span>
+    </div>
+
+    {% if cursos %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for curso in cursos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 hover-card">
+                    <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between">
+                        <span class="badge bg-light text-dark border">{{ curso.modalidad }}</span>
+                        <i class="bi bi-three-dots-vertical text-muted" style="cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="card-body pt-0">
+                        <h5 class="card-title fw-bold text-dark mb-2">{{ curso.nombre_curso }}</h5>
+                        <p class="card-text text-muted small">
+                            {{ curso.descripcion|default:"Sin descripción"|truncatewords:20 }}
+                        </p>
+                        <div class="d-flex align-items-center text-muted small mt-3">
+                            <i class="bi bi-clock me-1"></i> {{ curso.duracion }} Horas
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pb-3 pt-0">
+                        <hr class="text-muted opacity-25">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                            <a href="{% url 'editar_curso' curso.id %}" class="btn btn-outline-primary btn-sm flex-grow-1">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a href="{% url 'eliminar_curso' curso.id %}" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="return confirm('¿Estás seguro de que quieres eliminar el curso \'{{ curso.nombre_curso }}\'? Esta acción no se puede deshacer.');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- si no hay cursos hechos-->
+        <div class="text-center py-5 bg-white rounded shadow-sm border border-dashed">
+            <i class="bi bi-folder-plus fs-1 text-muted mb-3 d-block"></i>
+            <h5 class="text-muted">Aún no has creado ningún curso</h5>
+            <p class="text-secondary small mb-4">Comienza a compartir tu conocimiento creando tu primer curso hoy.</p>
+            <a href="{% url 'crear_curso' %}" class="btn btn-primary">
+                Crear mi primer curso
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .hover-card { transition: transform 0.2s; }
+    .hover-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

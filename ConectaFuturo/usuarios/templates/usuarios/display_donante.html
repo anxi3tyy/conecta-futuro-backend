@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel de Donante{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-6 fw-bold text-success">
+                <i class="bi bi-heart-pulse-fill me-2"></i>Panel de Donante
+            </h1>
+            <p class="text-muted lead mb-0">
+                Gracias, <strong>{{ usuario.first_name|default:usuario.username }}</strong>. Tu generosidad cambia vidas.
+            </p>
+        </div>
+        <a href="{% url 'logout_usuario' %}" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </a>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card bg-success text-white shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-body p-5 d-flex flex-column flex-md-row align-items-center justify-content-between">
+                    <div class="mb-4 mb-md-0">
+                        <h2 class="fw-bold mb-2"><i class="bi bi-box-seam me-2"></i>¿Tienes algo para donar hoy?</h2>
+                        <p class="mb-0 fs-5 opacity-75">Registra equipos tecnológicos, libros o insumos y nosotros nos encargamos del resto.</p>
+                    </div>
+                    <a href="{% url 'realizar_donacion' %}" class="btn btn-light text-success fw-bold btn-lg px-5 shadow-sm rounded-pill transform-scale">
+                        Registrar Nueva Donación
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="h4 mb-4 text-secondary border-bottom pb-2">Tu Historial de Aportes</h3>
+
+    {% if donaciones %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for donacion in donaciones %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 hover-card">
+                    <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                        <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ donacion.fecha|date:"d M Y" }}</small>
+                        <span class="badge bg-primary bg-opacity-10 text-primary">Registrado</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-dark">{{ donacion.tipo }}</h5>
+                        <p class="card-text text-muted small">
+                            {{ donacion.descripcion|default:"Sin descripción detallada"|truncatewords:15 }}
+                        </p>
+                        
+                        <div class="mt-3 pt-3 border-top d-flex align-items-center justify-content-between">
+                            <span class="text-secondary small fw-bold">Cantidad:</span>
+                            <span class="badge bg-success rounded-pill px-3">{{ donacion.cantidad }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Estado vacío -->
+        <div class="text-center py-5 bg-light rounded-3 border border-dashed">
+            <i class="bi bi-gift fs-1 text-muted mb-3 d-block"></i>
+            <h5 class="text-muted">Aún no has registrado donaciones.</h5>
+            <p class="text-secondary small">¡Haz clic en el botón verde arriba para comenzar!</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .transform-scale { transition: transform 0.2s; }
+    .transform-scale:hover { transform: scale(1.05); }
+    .hover-card { transition: transform 0.2s ease-in-out; }
+    .hover-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

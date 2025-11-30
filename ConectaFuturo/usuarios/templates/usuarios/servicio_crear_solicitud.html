@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingreso de Equipo - Servicio Técnico{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="card shadow-lg border-0 rounded-4">
+                
+                <div class="card-header bg-primary text-white py-3 px-4 rounded-top-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-box-arrow-in-right me-2"></i>Ingreso de Equipo</h5>
+                </div>
+
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!--datos dueño -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Nombre del Dueño / Cliente</label>
+                            {{ form.nombre_contacto }}
+                            {% if form.nombre_contacto.errors %}
+                                <div class="text-danger small">{{ form.nombre_contacto.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!--datos equipo -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Equipo / Dispositivo</label>
+                            {{ form.equipo }}
+                            <div class="form-text small">Ej: Notebook HP Pavilion, Impresora Epson...</div>
+                            {% if form.equipo.errors %}
+                                <div class="text-danger small">{{ form.equipo.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Estado Inicial</label>
+                            {{ form.estado }}
+                            <div class="form-text small">Generalmente "Pendiente" para revisión inicial.</div>
+                        </div>
+
+                        <!--falla -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary small text-uppercase">Problema Reportado</label>
+                            {{ form.descripcion_problema }}
+                            {% if form.descripcion_problema.errors %}
+                                <div class="text-danger small">{{ form.descripcion_problema.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'dashboard_servicio' %}" class="btn btn-outline-secondary px-4 fw-bold">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i> Registrar Ingreso
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

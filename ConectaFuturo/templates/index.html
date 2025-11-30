@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio - ConectaFuturo{% endblock %}
+
+{% block content %}
+<!-- bienvenida -->
+<section class="py-4 text-center container">
+    <div class="row py-lg-4">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            
+            {% if user.is_authenticated %}
+                <!-- usuarios logueados-->
+                <h1 class="fw-bold display-5">¡Hola, {{ user.first_name|default:user.username }}!</h1>
+                <p class="lead text-muted mb-4">
+                    Estás conectado como <strong class="text-uppercase text-primary">{{ user.tipo_usuario|default:"Usuario" }}</strong>.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'dashboard_redirect' %}" class="btn btn-primary btn-lg px-5 shadow">
+                        <i class="bi bi-speedometer2"></i> Ir a mi Dashboard
+                    </a>
+                    <a href="{% url 'logout_usuario' %}" class="btn btn-outline-secondary btn-lg px-4">
+                        Cerrar Sesión
+                    </a>
+                </div>
+
+            {% else %}
+                <!-- usuarios no logueados -->
+                <h1 class="fw-bold display-5">Bienvenido a ConectaFuturo</h1>
+                <p class="lead text-muted mb-4">
+                    La plataforma donde la educación, el voluntariado y la solidaridad se unen.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'login_usuario' %}" class="btn btn-primary btn-lg px-5 shadow">Ingresar</a>
+                    <a href="{% url 'registro_usuario' %}" class="btn btn-outline-secondary btn-lg px-4">Crear Cuenta</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<div class="py-4 bg-light">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- cursos -->
+            <div class="col-md-10 col-lg-8">
+                <div class="card text-white bg-primary shadow border-0 rounded-3 h-100">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-journal-bookmark-fill display-4 mb-3"></i>
+                        <h3 class="card-title fw-bold">Cursos Disponibles</h3>
+                        <p class="card-text fs-5">
+                            Consulta nuestra oferta académica actual. Puedes ver el temario y los detalles sin necesidad de registrarte.
+                        </p>
+                        <a href="{% url 'lista_cursos' %}" class="btn btn-light text-primary fw-bold btn-lg mt-2 px-5 rounded-pill">
+                            <i class="bi bi-search"></i> Ver Catálogo de Cursos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- voluntarios -->
+            <div class="col-md-10 col-lg-8">
+                <div class="card text-white bg-danger shadow border-0 rounded-3 h-100">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-heart-fill display-4 mb-3"></i>
+                        <h3 class="card-title fw-bold">Voluntariado</h3>
+                        <p class="card-text fs-5">
+                            ¿Quieres enseñar? Únete a nuestro equipo de instructores y comparte tu conocimiento.
+                        </p>
+                        <a href="{% url 'registro_usuario' %}" class="btn btn-light text-danger fw-bold btn-lg mt-2 px-5 rounded-pill">
+                            <i class="bi bi-person-plus-fill"></i> Quiero ser Voluntario
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- donaciones -->
+            <div class="col-md-10 col-lg-8">
+                <div class="card text-white bg-success shadow border-0 rounded-3 h-100">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-gift-fill display-4 mb-3"></i>
+                        <h3 class="card-title fw-bold">Donaciones</h3>
+                        <p class="card-text fs-5">
+                            Apoya nuestra causa donando equipos o recursos. Regístrate como donante para coordinar tu ayuda.
+                        </p>
+                        <a href="{% url 'registro_usuario' %}" class="btn btn-light text-success fw-bold btn-lg mt-2 px-5 rounded-pill">
+                            <i class="bi bi-hand-thumbs-up-fill"></i> Registrarme para Donar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- contacto servicio -->
+            <div class="col-md-10 col-lg-8">
+                <div class="card text-white bg-info shadow border-0 rounded-3 h-100">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-headset display-4 mb-3"></i>
+                        <h3 class="card-title fw-bold">Contacto y Ayuda</h3>
+                        <p class="card-text fs-5">
+                            ¿Tienes dudas o necesitas asistencia técnica? Contáctanos directamente.
+                        </p>
+                        <a href="{% url 'contacto_servicio' %}" class="btn btn-light text-info fw-bold btn-lg mt-2 px-5 rounded-pill">
+                            <i class="bi bi-envelope-fill"></i> Contactar Servicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
